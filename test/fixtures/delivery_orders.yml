@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  order_id: MyString
+  serving_datetime: 2018-02-19 17:24:11
+
+two:
+  order_id: MyString
+  serving_datetime: 2018-02-19 17:24:11
