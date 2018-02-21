@@ -3,14 +3,6 @@ Types::QueryType = GraphQL::ObjectType.define do
   # Add root-level fields here.
   # They will be entry points for queries on your schema.
 
-  # TODO: remove me
-  field :testField, types.String do
-    description "An example field added by the generator"
-    resolve ->(obj, args, ctx) {
-      "Hello World!"
-    }
-  end
-
   field :allLinks, !types[Types::LinkType] do
     resolve -> (obj, args, ctx) { Link.all }
   end
@@ -24,6 +16,20 @@ Types::QueryType = GraphQL::ObjectType.define do
   end
 
   field :allOrders, !types[Types::OrderItemType] do
-    
+    resolve -> (obj, args, ctx) { OrderItem.all }
+  end
+
+  field :orders, !types[Types::DeliveryOrderType] do
+    resolve -> (obj, args, ctx) { DeliveryOrder.all }
+  end
+
+  field :orders, !types[Types::DeliveryOrderType] do
+    resolve -> (obj, args, ctx) { DeliveryOrder.all }
+  end
+
+  field :order do
+    type Types::DeliveryOrderType
+    argument :order_id, !types.String
+    resolve -> (obj, args, ctx) { DeliveryOrder.find_by_order_id(args["order_id"]) }
   end
 end
