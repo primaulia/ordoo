@@ -1,6 +1,7 @@
 class OrderItem < ApplicationRecord
   belongs_to :delivery_order
   belongs_to :meal
+  has_one :feedback, as: :ratable
 
   attribute :order_item_id, :integer
   attribute :meal_name, :string

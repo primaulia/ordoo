@@ -19,8 +19,8 @@ Types::QueryType = GraphQL::ObjectType.define do
     resolve -> (obj, args, ctx) { OrderItem.all }
   end
 
-  field :orders, !types[Types::DeliveryOrderType] do
-    resolve -> (obj, args, ctx) { DeliveryOrder.all }
+  field :allFeedbacks, !types[Types::FeedbackType] do
+    resolve -> (obj, args, ctx) { Feedback.all }
   end
 
   field :orders, !types[Types::DeliveryOrderType] do
@@ -30,6 +30,21 @@ Types::QueryType = GraphQL::ObjectType.define do
   field :order do
     type Types::DeliveryOrderType
     argument :order_id, !types.String
-    resolve -> (obj, args, ctx) { DeliveryOrder.find_by_order_id(args["order_id"]) }
+    resolve -> (obj, args, ctx) {
+      DeliveryOrder.find_by_order_id(args["order_id"])
+    }
+  end
+
+  field :feedbacks, types[Types::FeedbackType] do
+    argument :order_id, !types.String
+    resolve -> (obj, args, ctx) {
+      feedbacks_for_order = []
+      dOrder = DeliveryOrder.find_by_order_id(args["order_id"])
+      feedbacks_for_order << dOrder.feedback
+
+      dOrder.order_items.each { |order| feedbacks_for_order << order.feedback unless order.feedback.nil? }
+
+      feedbacks_for_order
+    }
   end
 end

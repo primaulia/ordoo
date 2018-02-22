@@ -17,6 +17,7 @@
 Meal.destroy_all
 DeliveryOrder.destroy_all
 OrderItem.destroy_all
+Feedback.destroy_all
 
 10.times do
   Meal.create(
@@ -42,4 +43,24 @@ end
       unit_price: rand(495...2000)
     )
   end
+end
+
+3.times do
+  random_delivery_order = DeliveryOrder.all.sample
+
+  Feedback.create(
+    ratable_id: random_delivery_order.id,
+    ratable_type: 'DeliveryOrder',
+    rating: [1, -1].sample,
+    comment: "YOYO"
+  )
+
+  random_order_item = random_delivery_order.order_items.all.sample
+
+  Feedback.create(
+    ratable_id: random_order_item.id,
+    ratable_type: 'OrderItem',
+    rating: [1, -1].sample,
+    comment: "XOXO"
+  )
 end
